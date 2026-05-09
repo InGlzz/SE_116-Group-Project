@@ -1,3 +1,3 @@
 package com.project.buildings;
-public class Commercial {
+public class Commercial extends Zone {
 }

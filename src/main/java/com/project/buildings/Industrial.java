@@ -1,4 +1,4 @@
 package com.project.buildings;
 
-public class Industrial {
+public class Industrial extends Zone {
 }
