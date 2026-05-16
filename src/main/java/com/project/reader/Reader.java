@@ -23,7 +23,7 @@ public class Reader {
 			String line;
 			while((line = br.readLine()) != null) {
 				if(!line.trim().isEmpty()) {
-					lines.add(line);
+					lines.add(line.trim());
 				}
 			}
 		} catch (IOException e) {
@@ -36,10 +36,10 @@ public class Reader {
 		this.building = new char[this.y][this.x];
 
 		//set the Characters in a 2d array.
-		for(int i = 0; i < this.y; y++) {
+		for(int i = 0; i < this.y; i++) {
 			String line = lines.get(i);
-			for(int j = 0; j < this.x; x++) {
-				this.building[y][x] = line.charAt(x);
+			for(int j = 0; j < this.x; j++) {
+				this.building[i][j] = line.charAt(j);
 			}
 		}
 	}
