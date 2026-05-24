@@ -34,18 +34,18 @@ public class House extends Zone {
                     setLevel(3);
                 }
             }
-            if(getLevel() == 1){
-                setPopulation(m);
-            } else if (getLevel()==2) {
-                setPopulation(2*m);
+            //logic of setOutput
+            if (getLevel()==1){
+                setOutput(m);
+            }else if (getLevel()==2){
+                setOutput(m*2);
             } else if (getLevel()==3) {
-                setPopulation((2*m)+getLifestyle());
+                setOutput((m*2)+getLifestyle());
             }
         } else {
-            // if there are no electric health and education while there are population, the populaiton will decreasse
-            if (getPopulation() > 0) {
-                setPopulation(getPopulation() - 1);
+            // if basic needs not met zone collapses instantly
+            setOutput(0);
+            setLevel(0);
             }
         }
     }
-}
