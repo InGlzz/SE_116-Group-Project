@@ -1,6 +1,7 @@
 package com.project.buildings;
 
 public class Industrial extends Zone {
+    private static final int EXCESS_POPULATION_THRESHOLD = 25;
     public Industrial(int x, int y, char mapInput){
         super(x, y, mapInput);
     }
@@ -13,10 +14,7 @@ public class Industrial extends Zone {
         if (getPopulation() > 0 && getElectricity() > 0 && getWater() > 0) {
 
             //calculate the m value
-            int m = getPopulation();
-            if (getElectricity() < m) {
-                m = getElectricity();
-            }
+            int m = getElectricity();
             if (getWater() < m) {
                 m = getWater();
             }
@@ -33,7 +31,7 @@ public class Industrial extends Zone {
                 }
             }
             else if (currentLevel == 2) {     //if it is on level 2 and it has excees population like 25 it can level up to level 3
-                if (getPopulation() > 25) {
+                if (getPopulation() > EXCESS_POPULATION_THRESHOLD) {
                     setLevel(3);
                 }
             }

@@ -1,6 +1,8 @@
 package com.project.buildings;
 
 public class Commercial extends Zone {
+    private static final int EXCESS_POPULATION_THRESHOLD = 25;
+    private static final int EXCESS_GOODS_THRESHOLD = 30;
     public Commercial(int x, int y, char mapInput){
         super(x, y, mapInput);
     }
@@ -14,15 +16,12 @@ public class Commercial extends Zone {
 
 
             //calculate the value of m
-            int m = getPopulation();
-            if(getGoods()<m){
-                m=getGoods();
-            }if(getElectricity()<m){
-                m=getElectricity();
-            }if(getWater()<m){
-                m=getWater();
-            }if(getInternet()<m){
-                m=getInternet();
+            int m = getElectricity();
+            if (getWater() < m) {
+                m = getWater();
+            }
+            if (getInternet() < m) {
+                m = getInternet();
             }
             // level up check
             if (currentLevel == 0) {
@@ -36,7 +35,7 @@ public class Commercial extends Zone {
             }
             // if it is on level 2 and it has excees population(like 25) and excees goods(like 30) it can level up to level 3
             else if (currentLevel == 2) {
-                if (getPopulation() > 25 && getGoods() > 30) {
+                if (getPopulation() > EXCESS_POPULATION_THRESHOLD && getGoods() > EXCESS_GOODS_THRESHOLD) {
                     setLevel(3);
                 }
             }
@@ -50,13 +49,6 @@ public class Commercial extends Zone {
                     minPopulationGoods=getGoods();
                 }
                 setOutput((m*2)+minPopulationGoods);
-            }
-
-            //so there are commerce thats why every round goods will decrease
-            if(getGoods()>=10){
-                setGoods(getGoods()-10);
-            }else{
-                setGoods(0);
             }
         } else {
             //if it can access to essential things commerce is end
