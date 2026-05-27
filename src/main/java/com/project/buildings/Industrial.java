@@ -11,6 +11,14 @@ public class Industrial extends Zone {
 
         // if there are population, electricity and water it can level up to level 1
         if (getPopulation() > 0 && getElectricity() > 0 && getWater() > 0) {
+
+            //calculate the m value
+            int m = getElectricity();
+            if (getWater() < m) {
+                m = getWater();
+            }
+
+            // Level up control
             if (currentLevel == 0) {
                 setLevel(1);
             }
@@ -21,18 +29,21 @@ public class Industrial extends Zone {
                     setLevel(2);
                 }
             }
-            //if it is on level 2 and it has excees population like 25 it can level up to level 3
             else if (currentLevel == 2) {
-                if (getPopulation() > 25) {
                     setLevel(3);
                 }
+            // logic of setOutput
+            if (getLevel() == 1) {
+                setOutput(m);
+            } else if (getLevel() == 2) {
+                setOutput(m * 2);
+            } else if (getLevel() == 3) {
+                setOutput((m * 2) + getPopulation());
             }
-            // goods is proportional to level so if it level up, goods are also increase
-            setGoods(getLevel() * 10);
-
         } else {
-            // if there are no population and essential things can't generate goods
-            setGoods(0);
+            // if basic needs not met zone collapses instantly
+            setOutput(0);
+            setLevel(0);
         }
     }
 }

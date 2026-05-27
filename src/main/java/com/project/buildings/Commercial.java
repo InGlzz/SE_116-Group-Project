@@ -10,10 +10,18 @@ public class Commercial extends Zone {
         int currentLevel = getLevel();
 
         // if there are population,goods,elec.,water and internet it can level up to level 1
-        if (getPopulation() > 0 && getGoods() > 10 && getElectricity() > 0 && getWater() > 0 && getInternet() > 0) {
+        if (getPopulation() > 0 && getGoods() > 0 && getElectricity() > 0 && getWater() > 0 && getInternet() > 0) {
 
-            //in commercial, it sells goods so goods stock must be decreases
-            setGoods(getGoods() - 10);
+
+            //calculate the value of m
+            int m = getElectricity();
+            if (getWater() < m) {
+                m = getWater();
+            }
+            if (getInternet() < m) {
+                m = getInternet();
+            }
+            // level up check
             if (currentLevel == 0) {
                 setLevel(1);
             }
@@ -23,18 +31,24 @@ public class Commercial extends Zone {
                     setLevel(2);
                 }
             }
-
-            // if it is on level 2 and it has excees population(like 25) and excees goods(like 30) it can level up to level 3
             else if (currentLevel == 2) {
-                if (getPopulation() > 25 && getGoods() > 30) {
                     setLevel(3);
-                }
             }
-            // lifestyle is proportional to level so if it level up, lifestyle is also life style is increases
-            setLifestyle(getLifestyle() + (getLevel() * 5));
-
+            if(getLevel()==1){
+                setOutput(m);
+            } else if (getLevel()==2) {
+                setOutput(m*2);
+            } else if (getLevel()==3) {
+                int minPopulationGoods = getPopulation();
+                if(getGoods()<minPopulationGoods){
+                    minPopulationGoods=getGoods();
+                }
+                setOutput((m*2)+minPopulationGoods);
+            }
         } else {
-            //if it can access to essential things trade is end
+            //if it can access to essential things commerce is end
+            setOutput(0);
+            setLevel(0);
         }
     }
 }
