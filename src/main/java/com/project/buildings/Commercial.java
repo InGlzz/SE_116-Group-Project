@@ -1,8 +1,6 @@
 package com.project.buildings;
 
 public class Commercial extends Zone {
-    private static final int EXCESS_POPULATION_THRESHOLD = 25;
-    private static final int EXCESS_GOODS_THRESHOLD = 30;
     public Commercial(int x, int y, char mapInput){
         super(x, y, mapInput);
     }
@@ -33,11 +31,8 @@ public class Commercial extends Zone {
                     setLevel(2);
                 }
             }
-            // if it is on level 2 and it has excees population(like 25) and excees goods(like 30) it can level up to level 3
             else if (currentLevel == 2) {
-                if (getPopulation() > EXCESS_POPULATION_THRESHOLD && getGoods() > EXCESS_GOODS_THRESHOLD) {
                     setLevel(3);
-                }
             }
             if(getLevel()==1){
                 setOutput(m);
