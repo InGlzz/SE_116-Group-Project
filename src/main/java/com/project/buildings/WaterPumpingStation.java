@@ -5,6 +5,6 @@ public class WaterPumpingStation extends Utility{
         super(x, y, mapInput);// location + mapInput(W)
     }
     @Override
-    public void doTick(){
+    public void doTick(){// Must be empty because there is no internal logic needed
     }
 }
