@@ -49,7 +49,7 @@ public class Combiner {
 						map[i][j] = new EmptyCell(j,i,'E');
 						break;
 					default:
-						System.err.println("Wrong input detected!");
+						throw new IllegalArgumentException("Wrong map string detected: " + ht);
 				}
 			}
 		}
