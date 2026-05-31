@@ -81,10 +81,17 @@ public class Main {
 				for (int j = 0; j < map.length; j++) {
 					for (int k = 0; k < map[j].length; k++) {
 						if (map[j][k] instanceof Zone) {
+
 							Zone zone = (Zone) map[j][k];
-							poolPopulation += zone.getOutputPopulation();
-							poolGoods += zone.getGoods();
-							poolLifestyle += zone.getLifestyle();
+							if (zone instanceof House) {
+								poolPopulation += zone.getOutput();
+							}
+							else if (zone.getClass().getSimpleName().equals("Industrial")) {
+								poolGoods += zone.getOutput();
+							}
+							else if (zone.getClass().getSimpleName().equals("Commercial")) {
+								poolLifestyle += zone.getOutput();
+							}
 							totalZones++;
 						}
 					}
