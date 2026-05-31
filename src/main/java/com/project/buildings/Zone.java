@@ -52,4 +52,7 @@ public abstract class Zone extends Cell {
 		this.goods = 0;
 		this.lifestyle = 0;
 	}
+	public abstract int getOutputPopulation();
+	public abstract int getOutputGoods();
+	public abstract int getOutputLifestyle();
 }

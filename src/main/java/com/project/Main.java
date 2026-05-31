@@ -82,7 +82,7 @@ public class Main {
 					for (int k = 0; k < map[j].length; k++) {
 						if (map[j][k] instanceof Zone) {
 							Zone zone = (Zone) map[j][k];
-							poolPopulation += zone.getPopulation();
+							poolPopulation += zone.getOutputPopulation();
 							poolGoods += zone.getGoods();
 							poolLifestyle += zone.getLifestyle();
 							totalZones++;
