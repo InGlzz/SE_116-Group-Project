@@ -37,29 +37,72 @@ public class Main {
 		int poolGoods = 0;
 		int poolLifestyle = 0;
 		int totalZones = 0;
+
 		for (int i = 0; i < tickCount; i++) {
 			System.out.println("Tick: " + i);
+		//step 0 reset all zones before new services are provided
+		for (int j = 0; j < map.length; j++) {
+			for (int k = 0; k < map[j].length; k++) {
+				if (map[j][k] instanceof Zone) {
+					Zone zone = (Zone) map[j][k];
+					zone.resetTick();//call resetTick from zone and reset everything
+				}
+			}
+		}
 			//step 1 services are provided
 			distributeService();
 
 			//step 2 BFS system
 			//not ready
 
-
 			//step 3 previous tick's production is distributed
-			if (i > 0 && totalZones > 0) {
+			int houseCount = 0;
+			int commercialCount = 0;
+			int industrialCount = 0;
 
-				int populationShare = poolPopulation / totalZones;
-				int goodsShare = poolGoods / totalZones;
-				int lifestyleShare = poolLifestyle / totalZones;
+			for (int j = 0; j < map.length; j++) {
+				for (int k = 0; k < map[j].length; k++) {
+					if (map[j][k] instanceof Zone) {
+						Zone zone = (Zone) map[j][k];
 
-				for (int j = 0; j < map.length; j++) {
-					for (int k = 0; k < map[j].length; k++) {
-						if (map[j][k] instanceof Zone) {
-							Zone zone = (Zone) map[j][k];
-							zone.setPopulation(populationShare);
-							zone.setGoods(goodsShare);
+						if (zone instanceof House) houseCount++;
+						else if (zone instanceof Commercial) commercialCount++;
+						else if (zone instanceof Industrial) industrialCount++;
+					}
+				}
+			}
+			int popShareToCommercial = 0;
+			if (commercialCount > 0) {
+				popShareToCommercial = (poolPopulation / 2) / commercialCount;
+			}
+			int popShareToIndustrial = 0;
+			if (industrialCount > 0) {
+				popShareToIndustrial = (poolPopulation / 2) / industrialCount;
+			}
+			int goodsShare = 0;
+			if (commercialCount > 0) {
+				goodsShare = poolGoods / commercialCount;
+			}
+			int lifestyleShare = 0;
+			if (houseCount > 0) {
+				lifestyleShare = poolLifestyle / houseCount;
+			}
+
+			// distribute to specific zone
+			for (int j = 0; j < map.length; j++) {
+				for (int k = 0; k < map[j].length; k++) {
+					if (map[j][k] instanceof Zone) {
+						Zone zone = (Zone) map[j][k];
+
+						if (zone instanceof House) {
 							zone.setLifestyle(lifestyleShare);
+						}
+						else if (zone instanceof Commercial) {
+							zone.setPopulation(popShareToCommercial);
+							zone.setGoods(goodsShare);
+						}
+						else if (zone instanceof Industrial) {
+							zone.setPopulation(popShareToIndustrial);
 						}
 					}
 				}
@@ -86,10 +129,10 @@ public class Main {
 							if (zone instanceof House) {
 								poolPopulation += zone.getOutput();
 							}
-							else if (zone.getClass().getSimpleName().equals("Industrial")) {
+							else if (zone instanceof Industrial) {
 								poolGoods += zone.getOutput();
 							}
-							else if (zone.getClass().getSimpleName().equals("Commercial")) {
+							else if (zone instanceof Commercial) {
 								poolLifestyle += zone.getOutput();
 							}
 							totalZones++;
