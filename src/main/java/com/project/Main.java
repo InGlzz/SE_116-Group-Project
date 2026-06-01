@@ -98,6 +98,7 @@
 				}
 
 				// distribute to specific zone
+				// and print the distribution
 				for (int j = 0; j < map.length; j++) {
 					for (int k = 0; k < map[j].length; k++) {
 						if (map[j][k] instanceof Zone) {
