@@ -45,7 +45,7 @@
 			int totalZones = 0;
 
 			for (int i = 0; i < tickCount; i++) {
-				System.out.println("Tick: " + (i + 1));
+				System.out.println("Tick " + (i + 1));
 			//step 0 reset all zones before new services are provided
 			for (int j = 0; j < map.length; j++) {
 				for (int k = 0; k < map[j].length; k++) {
