@@ -59,7 +59,7 @@
 				distributeService();
 
 				//step 2 BFS system
-				//not ready
+				distributeUtilities();
 
 				//step 3 previous tick's production is distributed
 				int houseCount = 0;
