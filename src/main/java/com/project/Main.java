@@ -175,10 +175,13 @@
 									if (distance <= radius) {
 										if (service instanceof PoliceStation) {
 											zone.setHasSecurity(true);
+											System.out.println(zone.getClass().getSimpleName() + " at (" + k + "," + l + ") received security service");
 										} else if (service instanceof Hospital) {
 											zone.setHasHealth(true);
+											System.out.println(zone.getClass().getSimpleName() + " at (" + k + "," + l + ") received health service");
 										} else if (service instanceof School) {
 											zone.setHasEducation(true);
+											System.out.println(zone.getClass().getSimpleName() + " at (" + k + "," + l + ") received education service");
 										}
 									}
 								}
