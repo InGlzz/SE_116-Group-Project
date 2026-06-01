@@ -105,13 +105,25 @@
 
 							if (zone instanceof House) {
 								zone.setLifestyle(lifestyleShare);
+								if (lifestyleShare > 0) {
+									System.out.println("House at (" + zone.getX() + "," + zone.getY() + ") received " + lifestyleShare + " lifestyle");
+								}
 							}
 							else if (zone instanceof Commercial) {
 								zone.setPopulation(popShareToCommercial);
 								zone.setGoods(goodsShare);
+								if (popShareToCommercial > 0) {
+									System.out.println("Commercial at (" + zone.getX() + "," + zone.getY() + ") received " + popShareToCommercial + " population");
+								}
+								if (goodsShare > 0) {
+									System.out.println("Commercial at (" + zone.getX() + "," + zone.getY() + ") received " + goodsShare + " goods");
+								}
 							}
 							else if (zone instanceof Industrial) {
 								zone.setPopulation(popShareToIndustrial);
+								if (popShareToIndustrial > 0) {
+									System.out.println("Industrial at (" + zone.getX() + "," + zone.getY() + ") received " + popShareToIndustrial + " population");
+								}
 							}
 						}
 					}
