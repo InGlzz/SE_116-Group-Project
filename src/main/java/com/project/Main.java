@@ -29,12 +29,12 @@
 		}
 
 		public static Cell[][] startGame(String mapLocation) {
-			System.out.println("Loading the map");
+			// System.out.println("(DEBUG) Loading the map");
 			Reader rd = new Reader(mapLocation);
 			rd.readTheMap();
 
 			Combiner cmb = new Combiner();
-			System.out.println("Map loaded without any errors!");
+			// System.out.println("(DEBUG) Map loaded without any errors!");
 			return cmb.convertBuildings(rd.getBuilding(), rd.getX(), rd.getY());
 		}
 
