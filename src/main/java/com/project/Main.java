@@ -1,5 +1,7 @@
 	package com.project;
 
+	import java.util.ArrayList;
+	import java.util.List;
 	import com.project.reader.Reader;
 	import com.project.reader.Combiner;
 	import com.project.buildings.*;
@@ -176,5 +178,28 @@
 					}
 				}
 			}
+		}
+
+		public static List<Cell> getConnectableNeighbors(Cell cell) {
+			List<Cell> neighbors = new ArrayList<>();
+			int x = cell.getX();
+			int y = cell.getY();
+
+			// Define the possible directions (up, down, left, right)
+			int [][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+
+			for (int[] dir : directions) {
+				int newX = x + dir[0];
+				int newY = y + dir[1];
+
+				// Check if the new coordinates are within bounds
+				if (newX >= 0 && newX < map.length && newY >= 0 && newY < map[newX].length) {
+					Cell neighbor = map[newX][newY];
+					if (!(neighbor instanceof EmptyCell)) {
+						neighbors.add(neighbor);
+					}
+				}
+			}
+			return neighbors;
 		}
 	}
