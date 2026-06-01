@@ -149,6 +149,32 @@
 		}
 
 		public static void distributeService() {
-			//Write service distribution with Euclidean or Manhattan here.
+			for (int i = 0; i < map.length; i++) {
+				for (int j = 0; j < map[i].length; j++) {
+					if (map[i][j] instanceof Service) {
+						Service service = (Service) map[i][j];
+						int radius = service.getRadius();
+						
+						for (int k = 0; k < map.length; k++) {
+							for (int l = 0; l < map[k].length; l++) {
+								if (map[k][l] instanceof Zone) {
+									Zone zone = (Zone) map[k][l];
+
+									double distance = Math.sqrt(Math.pow(i - k, 2) + Math.pow(j - l, 2));
+									if (distance <= radius) {
+										if (service instanceof PoliceStation) {
+											zone.setHasSecurity(true);
+										} else if (service instanceof Hospital) {
+											zone.setHasHealth(true);
+										} else if (service instanceof School) {
+											zone.setHasEducation(true);
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
 		}
 	}
