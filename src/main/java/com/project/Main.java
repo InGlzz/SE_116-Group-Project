@@ -161,7 +161,7 @@
 							}
 						}
 					}
-					System.out.println("Tick " + i + " completed.Pool ==>> Population: " + poolPopulation + ", Goods: " + poolGoods + ", Lifestyle: " + poolLifestyle);
+					// System.out.println("(DEBUG) Tick " + (i + 1) + " completed.Pool ==>> Population: " + poolPopulation + ", Goods: " + poolGoods + ", Lifestyle: " + poolLifestyle);
 
 			}
 
