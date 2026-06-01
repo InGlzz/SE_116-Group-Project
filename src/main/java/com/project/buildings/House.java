@@ -8,6 +8,8 @@ public class House extends Zone {
     @Override
     public void doTick(){
         int currentLevel = getLevel();
+        int previousLevel = getLevel();
+
         //if there are electrictiy, water and internet it can level up to level 1
         if (getElectricity() > 0 && getWater() > 0 && getInternet() > 0) {
 
@@ -47,5 +49,13 @@ public class House extends Zone {
             setOutput(0);
             setLevel(0);
             }
+        
+        System.out.println("House at (" + getX() + "," + getY() + ") generated " + getOutput() + " population");
+        
+        if (getLevel() > previousLevel) {
+            System.out.println("House at (" + getX() + "," + getY() + ") levels up from " + previousLevel + " to " + getLevel());
+        } else if (getLevel() < previousLevel) {
+            System.out.println("House at (" + getX() + "," + getY() + ") levels down from " + previousLevel + " to " + getLevel());
         }
     }
+}
