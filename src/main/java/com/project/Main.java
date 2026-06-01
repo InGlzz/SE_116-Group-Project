@@ -247,10 +247,13 @@
 								// Distribute the correct resource type
 								if (provider instanceof PowerPlant) {
 									zone.setElectricity(zone.getElectricity() + provided);
+									System.out.println(zone.getClass().getSimpleName() + " at (" + zone.getX() + "," + zone.getY() + ") received " + provided + " electricity");
 								} else if (provider instanceof WaterPumpingStation) {
 									zone.setWater(zone.getWater() + provided);
+									System.out.println(zone.getClass().getSimpleName() + " at (" + zone.getX() + "," + zone.getY() + ") received " + provided + " water");
 								} else if (provider instanceof InternetHub) {
 									zone.setInternet(zone.getInternet() + provided);
+									System.out.println(zone.getClass().getSimpleName() + " at (" + zone.getX() + "," + zone.getY() + ") received " + provided + " internet");
 								}
 
 								// Reduce the remaining capacity of the provider
