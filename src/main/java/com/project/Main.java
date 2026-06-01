@@ -151,17 +151,22 @@
 		}
 
 		public static void distributeService() {
+			// Iterate through the map to find all services and distribute their effects to nearby zones
 			for (int i = 0; i < map.length; i++) {
+				
+				// For each cell in the map, check if it's a service
 				for (int j = 0; j < map[i].length; j++) {
 					if (map[i][j] instanceof Service) {
 						Service service = (Service) map[i][j];
 						int radius = service.getRadius();
-						
+
+						// Check all zones within the radius of the service
 						for (int k = 0; k < map.length; k++) {
 							for (int l = 0; l < map[k].length; l++) {
 								if (map[k][l] instanceof Zone) {
 									Zone zone = (Zone) map[k][l];
 
+									// Calculate the distance between the service and the zone
 									double distance = Math.sqrt(Math.pow(i - k, 2) + Math.pow(j - l, 2));
 									if (distance <= radius) {
 										if (service instanceof PoliceStation) {
