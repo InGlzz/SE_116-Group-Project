@@ -211,4 +211,62 @@
 			}
 			return neighbors;
 		}
+
+		public static void distributeUtilities() {
+			for (int i = 0; i < map.length; i++) {
+				for (int j = 0; j < map[i].length; j++) {
+					// Check if the cell is a utility provider
+					if (map[i][j] instanceof Utility) {
+						Utility provider = (Utility) map[i][j];
+
+						// Initialize BFS structures
+						Queue<Cell> queue = new LinkedList<>();
+						Set<Cell> visited = new HashSet<>();
+
+						queue.add(provider);
+						visited.add(provider);
+
+						int remainingCapacity = provider.getCapacity();
+
+						// Perform BFS to distribute resources to connected zones
+						while (!queue.isEmpty() && remainingCapacity > 0) {
+							Cell current = queue.poll();
+
+							if (current instanceof Zone) {
+								Zone zone = (Zone) current;
+								
+								// Demand is the output from the previous tick (minimum 1)
+								int demand = Math.max(1, zone.getOutput());
+								
+								// Zone takes up to its demand but cannot exceed the provider's remaining capacity
+								int provided = Math.min(demand, remainingCapacity);
+
+								// Distribute the correct resource type
+								if (provider instanceof PowerPlant) {
+									zone.setElectricity(zone.getElectricity() + provided);
+								} else if (provider instanceof WaterPumpingStation) {
+									zone.setWater(zone.getWater() + provided);
+								} else if (provider instanceof InternetHub) {
+									zone.setInternet(zone.getInternet() + provided);
+								}
+
+								// Reduce the remaining capacity of the provider
+								remainingCapacity -= provided;
+							}
+
+							if (remainingCapacity <= 0) break; // Stop if the provider has no more capacity to distribute
+
+							// Add valid and unvisited neighbors to the queue
+							List<Cell> neighbors = getConnectableNeighbors(current);
+							for (Cell neighbor : neighbors) {
+								if (!visited.contains(neighbor)) {
+									queue.add(neighbor);
+									visited.add(neighbor);
+								}
+							}
+						}
+					}
+				}
+			}
+		}
 	}
