@@ -1,6 +1,8 @@
-package com.project.buildings;
+package com.project.buildings.utility;
 
-public class WaterPumpingStation extends Utility{
+import com.project.buildings.mainclasses.Utility;
+
+public class WaterPumpingStation extends Utility {
     public WaterPumpingStation(int x, int y, char mapInput){
         super(x, y, mapInput);// location + mapInput(W)
     }

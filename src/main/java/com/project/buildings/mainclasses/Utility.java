@@ -1,4 +1,4 @@
-package com.project.buildings;
+package com.project.buildings.mainclasses;
 
 public abstract class Utility extends Cell {
 	private int maximumCapacity;

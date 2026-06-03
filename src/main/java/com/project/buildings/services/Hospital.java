@@ -1,6 +1,8 @@
-package com.project.buildings;
+package com.project.buildings.services;
 
-public class Hospital extends Service{
+import com.project.buildings.mainclasses.Service;
+
+public class Hospital extends Service {
     public Hospital(int x,int y, char mapInput){
         super(x,y,mapInput,3);
     }

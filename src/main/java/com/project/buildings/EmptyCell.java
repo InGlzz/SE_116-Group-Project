@@ -1,5 +1,7 @@
 package com.project.buildings;
 
+import com.project.buildings.mainclasses.Cell;
+
 public class EmptyCell extends Cell {
 	public EmptyCell(int x, int y, char mapInput) {
 		super(x, y, mapInput);

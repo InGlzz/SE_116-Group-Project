@@ -1,6 +1,8 @@
-package com.project.buildings;
+package com.project.buildings.services;
 
-public class School extends Service{
+import com.project.buildings.mainclasses.Service;
+
+public class School extends Service {
     public School(int x,int y, char mapInput){
         super(x,y,mapInput,4);
     }

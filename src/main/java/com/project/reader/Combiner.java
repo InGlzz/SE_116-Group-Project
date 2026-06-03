@@ -1,4 +1,8 @@
 package com.project.reader;
+import com.project.buildings.mainclasses.*;
+import com.project.buildings.services.*;
+import com.project.buildings.utility.*;
+import com.project.buildings.zones.*;
 import com.project.buildings.*;
 
 public class Combiner {
