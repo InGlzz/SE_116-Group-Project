@@ -1,6 +1,8 @@
-package com.project.buildings;
+package com.project.buildings.utility;
 
-public class PowerPlant extends Utility{
+import com.project.buildings.mainclasses.Utility;
+
+public class PowerPlant extends Utility {
     public PowerPlant(int x, int y, char mapInput){
         super(x, y, mapInput);// location + mapInput(P)
     }

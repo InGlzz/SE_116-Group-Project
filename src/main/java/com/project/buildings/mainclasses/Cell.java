@@ -1,4 +1,4 @@
-package com.project.buildings;
+package com.project.buildings.mainclasses;
 
 public abstract class Cell {
 	//x and y grid, map input is going to be the map files contents(H, E...)

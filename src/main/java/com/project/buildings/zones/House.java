@@ -1,4 +1,6 @@
-package com.project.buildings;
+package com.project.buildings.zones;
+
+import com.project.buildings.mainclasses.Zone;
 
 public class House extends Zone {
     public House(int x, int y, char mapInput){

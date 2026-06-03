@@ -1,6 +1,8 @@
-package com.project.buildings;
+package com.project.buildings.services;
 
-public class PoliceStation extends Service{
+import com.project.buildings.mainclasses.Service;
+
+public class PoliceStation extends Service {
     public PoliceStation(int x,int y, char mapInput){
         super(x,y,mapInput,5);
     }

@@ -1,4 +1,4 @@
-package com.project.buildings;
+package com.project.buildings.mainclasses;
 
 public abstract class Service extends Cell {
 	private int radius;

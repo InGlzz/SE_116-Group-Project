@@ -1,6 +1,8 @@
-package com.project.buildings;
+package com.project.buildings.utility;
 
-public class InternetHub extends Utility{
+import com.project.buildings.mainclasses.Utility;
+
+public class InternetHub extends Utility {
     public InternetHub(int x, int y, char mapInput){
         super(x, y, mapInput);//location + mapInput(T)
     }

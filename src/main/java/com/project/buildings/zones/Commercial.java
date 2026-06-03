@@ -1,4 +1,6 @@
-package com.project.buildings;
+package com.project.buildings.zones;
+
+import com.project.buildings.mainclasses.Zone;
 
 public class Commercial extends Zone {
     public Commercial(int x, int y, char mapInput){

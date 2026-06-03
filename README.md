@@ -1,16 +1,10 @@
-# SE_116-Group-Project
-Objectville project for SE-116 lecture
+# Objectville
+A fun game which plays itself. You just import a txt file with according structures.
 
-# Project Structure
 
-To get the project running in IntelliJ, please follow this structure:
 
-```text
-SE-116-Group-Project/
-├── src/
-│   ├── main/
-│   │   └── java/      <-- Right-click & "Mark as Sources Root"
-│   └── test/
-│       └── java/      <-- Right-click & "Mark as Test Sources Root"
-├── .gitignore
-└── README.md
+# Project Usage
+To use the project you can call the main with these parameters:
+
+java main.java (txt Location) (Tick count).
+
