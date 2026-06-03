@@ -1,8 +1,14 @@
 	package com.project;
 
+	import java.util.ArrayList;
+	import java.util.List;
 	import com.project.reader.Reader;
 	import com.project.reader.Combiner;
 	import com.project.buildings.*;
+	import java.util.LinkedList;
+	import java.util.Queue;
+	import java.util.HashSet;
+	import java.util.Set;
 
 	public class Main {
 		private static Cell[][] map;
@@ -39,7 +45,7 @@
 			int totalZones = 0;
 
 			for (int i = 0; i < tickCount; i++) {
-				System.out.println("Tick: " + i);
+				System.out.println("Tick: " + (i + 1));
 			//step 0 reset all zones before new services are provided
 			for (int j = 0; j < map.length; j++) {
 				for (int k = 0; k < map[j].length; k++) {
@@ -53,7 +59,7 @@
 				distributeService();
 
 				//step 2 BFS system
-				//not ready
+				distributeUtilities();
 
 				//step 3 previous tick's production is distributed
 				int houseCount = 0;
@@ -149,6 +155,118 @@
 		}
 
 		public static void distributeService() {
-			//Write service distribution with Euclidean or Manhattan here.
+			// Iterate through the map to find all services and distribute their effects to nearby zones
+			for (int i = 0; i < map.length; i++) {
+
+				// For each cell in the map, check if it's a service
+				for (int j = 0; j < map[i].length; j++) {
+					if (map[i][j] instanceof Service) {
+						Service service = (Service) map[i][j];
+						int radius = service.getRadius();
+
+						// Check all zones within the radius of the service
+						for (int k = 0; k < map.length; k++) {
+							for (int l = 0; l < map[k].length; l++) {
+								if (map[k][l] instanceof Zone) {
+									Zone zone = (Zone) map[k][l];
+
+									// Calculate the distance between the service and the zone
+									double distance = Math.sqrt(Math.pow(i - k, 2) + Math.pow(j - l, 2));
+									if (distance <= radius) {
+										if (service instanceof PoliceStation) {
+											zone.setHasSecurity(true);
+										} else if (service instanceof Hospital) {
+											zone.setHasHealth(true);
+										} else if (service instanceof School) {
+											zone.setHasEducation(true);
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		public static List<Cell> getConnectableNeighbors(Cell cell) {
+			List<Cell> neighbors = new ArrayList<>();
+			int x = cell.getX();
+			int y = cell.getY();
+
+			// Define the possible directions (up, down, left, right)
+			int [][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+
+			for (int[] dir : directions) {
+				int newX = x + dir[0];
+				int newY = y + dir[1];
+
+				// Check if the new coordinates are within bounds
+				if (newX >= 0 && newX < map.length && newY >= 0 && newY < map[newX].length) {
+					Cell neighbor = map[newX][newY];
+					if (!(neighbor instanceof EmptyCell)) {
+						neighbors.add(neighbor);
+					}
+				}
+			}
+			return neighbors;
+		}
+
+		public static void distributeUtilities() {
+			for (int i = 0; i < map.length; i++) {
+				for (int j = 0; j < map[i].length; j++) {
+					// Check if the cell is a utility provider
+					if (map[i][j] instanceof Utility) {
+						Utility provider = (Utility) map[i][j];
+
+						// Initialize BFS structures
+						Queue<Cell> queue = new LinkedList<>();
+						Set<Cell> visited = new HashSet<>();
+
+						queue.add(provider);
+						visited.add(provider);
+
+						int remainingCapacity = provider.getCapacity();
+
+						// Perform BFS to distribute resources to connected zones
+						while (!queue.isEmpty() && remainingCapacity > 0) {
+							Cell current = queue.poll();
+
+							if (current instanceof Zone) {
+								Zone zone = (Zone) current;
+								
+								// Demand is the output from the previous tick (minimum 1)
+								int demand = Math.max(1, zone.getOutput());
+								
+								// Zone takes up to its demand but cannot exceed the provider's remaining capacity
+								int provided = Math.min(demand, remainingCapacity);
+
+								// Distribute the correct resource type
+								if (provider instanceof PowerPlant) {
+									zone.setElectricity(zone.getElectricity() + provided);
+								} else if (provider instanceof WaterPumpingStation) {
+									zone.setWater(zone.getWater() + provided);
+								} else if (provider instanceof InternetHub) {
+									zone.setInternet(zone.getInternet() + provided);
+								}
+
+								// Reduce the remaining capacity of the provider
+								remainingCapacity -= provided;
+							}
+
+							if (remainingCapacity <= 0) break; // Stop if the provider has no more capacity to distribute
+
+							// Add valid and unvisited neighbors to the queue
+							List<Cell> neighbors = getConnectableNeighbors(current);
+							for (Cell neighbor : neighbors) {
+								if (!visited.contains(neighbor)) {
+									queue.add(neighbor);
+									visited.add(neighbor);
+								}
+							}
+						}
+					}
+				}
+			}
 		}
 	}
