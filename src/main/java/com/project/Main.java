@@ -114,13 +114,25 @@ public class Main {
 
 						if (zone instanceof House) {
 							zone.setLifestyle(lifestyleShare);
+							if (lifestyleShare > 0) {
+								System.out.println("House at (" + zone.getY() + "," + zone.getX() + ") received " + lifestyleShare + " lifestyle");
+							}
 						}
 						else if (zone instanceof Commercial) {
 							zone.setPopulation(popShare);
 							zone.setGoods(goodsShare);
+							if (popShare > 0) {
+								System.out.println("Commercial at (" + zone.getY() + "," + zone.getX() + ") received " + popShare + " population");
+							}
+							if (goodsShare > 0) {
+								System.out.println("Commercial at (" + zone.getY() + "," + zone.getX() + ") received " + goodsShare + " goods");
+							}
 						}
 						else if (zone instanceof Industrial) {
 							zone.setPopulation(popShare);
+							if (popShare > 0) {
+								System.out.println("Industrial at (" + zone.getY() + "," + zone.getX() + ") received " + popShare + " population");
+							}
 						}
 					}
 				}
@@ -245,7 +257,7 @@ public class Main {
 							int demand = Math.max(1, zone.getOutput());
 							int unmetDemand = 0;
 
-							// Prevent Double Dipping & Filter Internet from Industrial
+
 							if (provider instanceof PowerPlant) unmetDemand = demand - zone.getElectricity();
 							else if (provider instanceof WaterPumpingStation) unmetDemand = demand - zone.getWater();
 							else if (provider instanceof InternetHub) {
