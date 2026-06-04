@@ -81,34 +81,29 @@ public class Main {
 			// Step 3: Calculate Safe Shares
 			int totalDemandingBuildings = commercialCount + industrialCount;
 
-// 1. POPULATION SHARE HESABI
 			int popShare;
 			if (poolPopulation == 0) {
-				popShare = 1; // Havuz boşsa doğrudan 1 ver
+				popShare = 1;
 			} else if (totalDemandingBuildings > 0) {
-				popShare = poolPopulation / totalDemandingBuildings; // Bina varsa bölüştür
+				popShare = poolPopulation / totalDemandingBuildings;
 			} else {
-				popShare = 0; // Talep eden bina yoksa 0
+				popShare = 0;
 			}
-
-// 2. GOODS SHARE HESABI
 			int goodsShare;
 			if (poolGoods == 0) {
-				goodsShare = 1; // Havuz boşsa doğrudan 1 ver
+				goodsShare = 1;
 			} else if (commercialCount > 0) {
-				goodsShare = poolGoods / commercialCount; // Ticari bina varsa bölüştür
+				goodsShare = poolGoods / commercialCount;
 			} else {
-				goodsShare = 0; // Ticari bina yoksa 0
+				goodsShare = 0;
 			}
-
-// 3. LIFESTYLE SHARE HESABI
 			int lifestyleShare;
 			if (poolLifestyle == 0) {
-				lifestyleShare = 1; // Havuz boşsa doğrudan 1 ver
+				lifestyleShare = 1;
 			} else if (houseCount > 0) {
-				lifestyleShare = poolLifestyle / houseCount; // Ev varsa bölüştür
+				lifestyleShare = poolLifestyle / houseCount;
 			} else {
-				lifestyleShare = 0; // Ev yoksa 0
+				lifestyleShare = 0;
 			}
 
 			// Step 3: Distribute to Specific Zones
