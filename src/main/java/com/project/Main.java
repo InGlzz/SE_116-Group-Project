@@ -80,12 +80,36 @@ public class Main {
 
 			// Step 3: Calculate Safe Shares
 			int totalDemandingBuildings = commercialCount + industrialCount;
-			int popShare = (totalDemandingBuildings > 0) ? (poolPopulation / totalDemandingBuildings) : 0;
-			if (poolPopulation == 0) popShare = 1;
-			int goodsShare = (commercialCount > 0) ? (poolGoods / commercialCount) : 0;
-			if (poolGoods == 0) goodsShare = 1;
-			int lifestyleShare = (houseCount > 0) ? (poolLifestyle / houseCount) : 0;
-			if (poolLifestyle == 0) lifestyleShare = 1;
+
+// 1. POPULATION SHARE HESABI
+			int popShare;
+			if (poolPopulation == 0) {
+				popShare = 1; // Havuz boşsa doğrudan 1 ver
+			} else if (totalDemandingBuildings > 0) {
+				popShare = poolPopulation / totalDemandingBuildings; // Bina varsa bölüştür
+			} else {
+				popShare = 0; // Talep eden bina yoksa 0
+			}
+
+// 2. GOODS SHARE HESABI
+			int goodsShare;
+			if (poolGoods == 0) {
+				goodsShare = 1; // Havuz boşsa doğrudan 1 ver
+			} else if (commercialCount > 0) {
+				goodsShare = poolGoods / commercialCount; // Ticari bina varsa bölüştür
+			} else {
+				goodsShare = 0; // Ticari bina yoksa 0
+			}
+
+// 3. LIFESTYLE SHARE HESABI
+			int lifestyleShare;
+			if (poolLifestyle == 0) {
+				lifestyleShare = 1; // Havuz boşsa doğrudan 1 ver
+			} else if (houseCount > 0) {
+				lifestyleShare = poolLifestyle / houseCount; // Ev varsa bölüştür
+			} else {
+				lifestyleShare = 0; // Ev yoksa 0
+			}
 
 			// Step 3: Distribute to Specific Zones
 			for (int j = 0; j < map.length; j++) {
