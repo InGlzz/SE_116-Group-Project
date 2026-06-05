@@ -82,30 +82,25 @@ public class Main {
 			int totalDemandingBuildings = commercialCount + industrialCount;
 
 			int popShare;
-			if (poolPopulation == 0) {
-				popShare = 1;
-			} else if (totalDemandingBuildings > 0) {
-				popShare = poolPopulation / totalDemandingBuildings;
-			} else {
-				popShare = 0;
-			}
-			int goodsShare;
-			if (poolGoods == 0) {
-				goodsShare = 1;
-			} else if (commercialCount > 0) {
-				goodsShare = poolGoods / commercialCount;
-			} else {
-				goodsShare = 0;
-			}
-			int lifestyleShare;
-			if (poolLifestyle == 0) {
-				lifestyleShare = 1;
-			} else if (houseCount > 0) {
-				lifestyleShare = poolLifestyle / houseCount;
-			} else {
-				lifestyleShare = 0;
+				if (totalDemandingBuildings > 0) {
+					popShare = poolPopulation / totalDemandingBuildings;
+				} else {
+					popShare = 0;
 			}
 
+			int goodsShare;
+				if (commercialCount > 0) {
+					goodsShare = poolGoods / commercialCount;
+				} else {
+					goodsShare = 0;
+			}
+
+			int lifestyleShare;
+				if (houseCount > 0) {
+					lifestyleShare = poolLifestyle / houseCount;
+				} else {
+					lifestyleShare = 0;
+			}
 
 			// Step 3: Distribute to Specific Zones
 			for (int j = 0; j < map.length; j++) {
