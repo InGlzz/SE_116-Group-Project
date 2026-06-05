@@ -11,24 +11,22 @@ public class Industrial extends Zone {
     public void doTick(){
         int currentLevel = getLevel();
 
-        //basic needs
+        // if there are population, electricity and water it can level up to level 1
         if (getElectricity() > 0 && getWater() > 0) {
 
-            //calculate the m value ( minimum amount of utility)
+            //calculate the m value
             int m = getElectricity();
             if (getWater() < m) {
                 m = getWater();
             }
-            int targetLevel = 0;
+            int targetLevel = 1;
 
-            //if it has basic needs + population
-            if (getPopulation() > 0) {
-                targetLevel = 1;
-            }
-            //if it is on level 2 and it has security
-            if (getPopulation() > 0 && getHasSecurity()) {
+
+            // if it is on level 1 and it has security it can level up to level 2
+            if (getHasSecurity()) {
                 targetLevel = 2;
-                if (getPopulation() > 0) {//excess population
+                //if it is also have population more than 0 it can level up to level 3
+                if (getPopulation() > 0) {
                     targetLevel = 3;
                 }
             }
@@ -39,7 +37,7 @@ public class Industrial extends Zone {
                 setLevel(currentLevel - 1);
             }
 
-            //output logic
+            //Output logic
             if (getLevel() == 1) {
                 setOutput(m);
             } else if (getLevel() == 2) {
