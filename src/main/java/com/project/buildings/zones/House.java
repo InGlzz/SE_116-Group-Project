@@ -10,18 +10,22 @@ public class House extends Zone {
     @Override
     public void doTick(){
         int currentLevel = getLevel();
-        //if there are electrictiy, water and internet it can level up to level 1
+
+        //basic needs
         if (getElectricity() > 0 && getWater() > 0 && getInternet() > 0) {
-            //calculate the m value
+
+            //calculate the m value ( minimum amount of utility)
             int m = getElectricity();
             if(getWater() < m) m = getWater();
             if(getInternet() < m) m = getInternet();
 
-            int targetLevel = 1;
+            int targetLevel = 0;
+
+            targetLevel = 1;
+
             //if there are security, health and education it can level up to level 2
             if (getHasSecurity() && getHasHealth() && getHasEducation()) {
                 targetLevel = 2;
-                //if house get lifestyle it can level up to level 3
                 if (getLifestyle() > 0) {
                     targetLevel = 3;
                 }
@@ -32,8 +36,8 @@ public class House extends Zone {
             } else if (currentLevel > targetLevel) {
                 setLevel(currentLevel - 1);
             }
-            //logic of Output
 
+            //output logic
             if (getLevel() == 1) {
                 setOutput(m);
             } else if (getLevel() == 2) {
