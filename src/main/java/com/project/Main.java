@@ -81,9 +81,31 @@ public class Main {
 			// Step 3: Calculate Safe Shares
 			int totalDemandingBuildings = commercialCount + industrialCount;
 
-			int popShare = (totalDemandingBuildings > 0) ? poolPopulation / totalDemandingBuildings : 0;
-			int goodsShare = (commercialCount > 0) ? poolGoods / commercialCount : 0;
-			int lifestyleShare = (houseCount > 0) ? poolLifestyle / houseCount : 0;
+			int popShare;
+			if (poolPopulation == 0) {
+				popShare = 1;
+			} else if (totalDemandingBuildings > 0) {
+				popShare = poolPopulation / totalDemandingBuildings;
+			} else {
+				popShare = 0;
+			}
+			int goodsShare;
+			if (poolGoods == 0) {
+				goodsShare = 1;
+			} else if (commercialCount > 0) {
+				goodsShare = poolGoods / commercialCount;
+			} else {
+				goodsShare = 0;
+			}
+			int lifestyleShare;
+			if (poolLifestyle == 0) {
+				lifestyleShare = 1;
+			} else if (houseCount > 0) {
+				lifestyleShare = poolLifestyle / houseCount;
+			} else {
+				lifestyleShare = 0;
+			}
+
 
 			// Step 3: Distribute to Specific Zones
 			for (int j = 0; j < map.length; j++) {
