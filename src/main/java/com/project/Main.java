@@ -81,62 +81,42 @@ public class Main {
 			// Step 3: Calculate Safe Shares
 			int totalDemandingBuildings = commercialCount + industrialCount;
 
-			int popShare;
-			if (poolPopulation == 0) {
-				popShare = 1;
-			} else if (totalDemandingBuildings > 0) {
-				popShare = poolPopulation / totalDemandingBuildings;
-			} else {
-				popShare = 0;
-			}
-			int goodsShare;
-			if (poolGoods == 0) {
-				goodsShare = 1;
-			} else if (commercialCount > 0) {
-				goodsShare = poolGoods / commercialCount;
-			} else {
-				goodsShare = 0;
-			}
-			int lifestyleShare;
-			if (poolLifestyle == 0) {
-				lifestyleShare = 1;
-			} else if (houseCount > 0) {
-				lifestyleShare = poolLifestyle / houseCount;
-			} else {
-				lifestyleShare = 0;
-			}
+			int popShare = (totalDemandingBuildings > 0) ? poolPopulation / totalDemandingBuildings : 0;
+			int goodsShare = (commercialCount > 0) ? poolGoods / commercialCount : 0;
+			int lifestyleShare = (houseCount > 0) ? poolLifestyle / houseCount : 0;
 
 			// Step 3: Distribute to Specific Zones
 			for (int j = 0; j < map.length; j++) {
-				for (int k = 0; k < map[j].length; k++) {
-					if (map[j][k] instanceof Zone) {
-						Zone zone = (Zone) map[j][k];
+    for (int k = 0; k < map[j].length; k++) {
+        if (map[j][k] instanceof Zone) {
+            Zone zone = (Zone) map[j][k];
+            String type = zone.getClass().getSimpleName();
 
-						if (zone instanceof House) {
-							zone.setLifestyle(lifestyleShare);
-							if (lifestyleShare > 0) {
-								System.out.println("House at (" + zone.getY() + "," + zone.getX() + ") received " + lifestyleShare + " lifestyle");
-							}
-						}
-						else if (zone instanceof Commercial) {
-							zone.setPopulation(popShare);
-							zone.setGoods(goodsShare);
-							if (popShare > 0) {
-								System.out.println("Commercial at (" + zone.getY() + "," + zone.getX() + ") received " + popShare + " population");
-							}
-							if (goodsShare > 0) {
-								System.out.println("Commercial at (" + zone.getY() + "," + zone.getX() + ") received " + goodsShare + " goods");
-							}
-						}
-						else if (zone instanceof Industrial) {
-							zone.setPopulation(popShare);
-							if (popShare > 0) {
-								System.out.println("Industrial at (" + zone.getY() + "," + zone.getX() + ") received " + popShare + " population");
-							}
-						}
-					}
-				}
-			}
+            if (zone instanceof House) {
+                zone.setLifestyle(lifestyleShare);
+                if (lifestyleShare > 0) {
+                    System.out.println(type + " at (" + zone.getY() + "," + zone.getX() + ") received " + lifestyleShare + " lifestyle");
+                }
+            }
+            else if (zone instanceof Commercial) {
+                zone.setPopulation(popShare);
+                zone.setGoods(goodsShare);
+                if (popShare > 0) {
+                    System.out.println(type + " at (" + zone.getY() + "," + zone.getX() + ") received " + popShare + " population");
+                }
+                if (goodsShare > 0) {
+                    System.out.println(type + " at (" + zone.getY() + "," + zone.getX() + ") received " + goodsShare + " goods");
+                }
+            }
+            else if (zone instanceof Industrial) {
+                zone.setPopulation(popShare);
+                if (popShare > 0) {
+                    System.out.println(type + " at (" + zone.getY() + "," + zone.getX() + ") received " + popShare + " population");
+                }
+            }
+        }
+    }
+}
 
 			// Step 4: Tick Updates
 			for (int a = 0; a < map.length; a++) {
@@ -216,18 +196,15 @@ public class Main {
 		int x = cell.getX();
 		int y = cell.getY();
 
-		// The Teacher's BFS Order: Orthogonal (Cross) First, then Diagonals
-		int[][] directions = {{0, -1}, {0, 1}, {-1, 0}, {1, 0}, {-1, -1}, {1, -1}, {-1, 1}, {1, 1}};
+		// Strict 4-Directional Orthogonal BFS (Left, Right, Up, Down)
+		int[][] directions = {{0, -1}, {0, 1}, {-1, 0}, {1, 0}};
 
 		for (int[] dir : directions) {
 			int newX = x + dir[0];
 			int newY = y + dir[1];
 
-			// Bounds check
 			if (newY >= 0 && newY < map.length && newX >= 0 && newX < map[0].length) {
 				Cell neighbor = map[newY][newX];
-
-				// Reverting to your exact original rule: ONLY Empty Cells block propagation
 				if (neighbor != null && !(neighbor instanceof EmptyCell)) {
 					neighbors.add(neighbor);
 				}
@@ -237,17 +214,26 @@ public class Main {
 	}
 
 	public static void distributeUtilities() {
+		// Enforce chronological processing grouped by utility type
+		distributeSpecificUtility(InternetHub.class);
+		distributeSpecificUtility(WaterPumpingStation.class);
+		distributeSpecificUtility(PowerPlant.class);
+	}
+
+	private static void distributeSpecificUtility(Class<? extends Utility> utilityClass) {
 		for (int i = 0; i < map.length; i++) {
 			for (int j = 0; j < map[i].length; j++) {
-				if (map[i][j] instanceof Utility) {
+				if (utilityClass.isInstance(map[i][j])) {
 					Utility provider = (Utility) map[i][j];
+					int remainingCapacity = provider.getCapacity();
+					
+					if (remainingCapacity <= 0) continue;
+
 					Queue<Cell> queue = new LinkedList<>();
 					Set<Cell> visited = new HashSet<>();
-
+					
 					queue.add(provider);
 					visited.add(provider);
-
-					int remainingCapacity = provider.getCapacity();
 
 					while (!queue.isEmpty() && remainingCapacity > 0) {
 						Cell current = queue.poll();
@@ -257,11 +243,10 @@ public class Main {
 							int demand = Math.max(1, zone.getOutput());
 							int unmetDemand = 0;
 
-
 							if (provider instanceof PowerPlant) unmetDemand = demand - zone.getElectricity();
 							else if (provider instanceof WaterPumpingStation) unmetDemand = demand - zone.getWater();
 							else if (provider instanceof InternetHub) {
-								if (!(zone instanceof Industrial)) { // Industrial doesn't use Internet
+								if (!(zone instanceof Industrial)) {
 									unmetDemand = demand - zone.getInternet();
 								}
 							}
@@ -286,7 +271,6 @@ public class Main {
 
 						if (remainingCapacity <= 0) break;
 
-						// EVERYTHING passes utility down the line except EmptyCells (handled in neighbor check)
 						List<Cell> neighbors = getConnectableNeighbors(current);
 						for (Cell neighbor : neighbors) {
 							if (!visited.contains(neighbor)) {
