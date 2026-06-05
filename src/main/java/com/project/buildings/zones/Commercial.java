@@ -21,11 +21,20 @@ public class Commercial extends Zone {
             if (getInternet() < m) m = getInternet();
 
             //population and goods are aldo basic needs for level 1
-            if (getPopulation() > 0 && getGoods() > 0) targetLevel = 1; //if it has population and good it can level up to level 1
 
-            if (getPopulation() > 0 && getGoods() > 0 && getHasSecurity()) targetLevel = 2;//if it is on level 1 and it has security it can level up to level 2
+            //if it has population and good it can level up to level 1
+            if (getPopulation() > 0 && getGoods() > 0){
+                targetLevel = 1;
+            }
 
-            if (getPopulation() > 0 && getGoods() > 0 && getHasSecurity()) targetLevel = 3;
+            //if it is on level 1 and it has security it can level up to level 2
+            if (getPopulation() > 0 && getGoods() > 0 && getHasSecurity()){
+                targetLevel = 2;
+            }
+
+            if (getPopulation() > 0 && getGoods() > 0 && getHasSecurity()) {
+                targetLevel = 3;
+            }
 
 
 
