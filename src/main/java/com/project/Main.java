@@ -82,60 +82,58 @@ public class Main {
 			int totalDemandingBuildings = commercialCount + industrialCount;
 
 			int popShare;
-				if (totalDemandingBuildings > 0) {
-					popShare = poolPopulation / totalDemandingBuildings;
-				} else {
-					popShare = 0;
+			if (totalDemandingBuildings > 0) {
+				popShare = poolPopulation / totalDemandingBuildings;
+			} else {
+				popShare = 0;
 			}
 
 			int goodsShare;
-				if (commercialCount > 0) {
-					goodsShare = poolGoods / commercialCount;
-				} else {
-					goodsShare = 0;
+			if (commercialCount > 0) {
+				goodsShare = poolGoods / commercialCount;
+			} else {
+				goodsShare = 0;
 			}
 
 			int lifestyleShare;
-				if (houseCount > 0) {
-					lifestyleShare = poolLifestyle / houseCount;
-				} else {
-					lifestyleShare = 0;
+			if (houseCount > 0) {
+				lifestyleShare = poolLifestyle / houseCount;
+			} else {
+				lifestyleShare = 0;
 			}
 
 			// Step 3: Distribute to Specific Zones
 			for (int j = 0; j < map.length; j++) {
-    for (int k = 0; k < map[j].length; k++) {
-        if (map[j][k] instanceof Zone) {
-            Zone zone = (Zone) map[j][k];
-            String type = zone.getClass().getSimpleName();
+				for (int k = 0; k < map[j].length; k++) {
+					if (map[j][k] instanceof Zone) {
+						Zone zone = (Zone) map[j][k];
+						String type = zone.getClass().getSimpleName();
 
-            if (zone instanceof House) {
-                zone.setLifestyle(lifestyleShare);
-                if (lifestyleShare > 0) {
-                    System.out.println(type + " at (" + zone.getY() + "," + zone.getX() + ") received " + lifestyleShare + " lifestyle");
-                }
-            }
-            else if (zone instanceof Commercial) {
-                zone.setPopulation(popShare);
-                zone.setGoods(goodsShare);
-                if (popShare > 0) {
-                    System.out.println(type + " at (" + zone.getY() + "," + zone.getX() + ") received " + popShare + " population");
-                }
-                if (goodsShare > 0) {
-                    System.out.println(type + " at (" + zone.getY() + "," + zone.getX() + ") received " + goodsShare + " goods");
-                }
-            }
-            else if (zone instanceof Industrial) {
-                zone.setPopulation(popShare);
-                if (popShare > 0) {
-                    System.out.println(type + " at (" + zone.getY() + "," + zone.getX() + ") received " + popShare + " population");
-                }
-            }
-        }
-    }
-}
+						if (zone instanceof House) {
+							zone.setLifestyle(lifestyleShare);
+							if (lifestyleShare > 0) {
+								System.out.println(type + " at (" + zone.getY() + "," + zone.getX() + ") received " + lifestyleShare + " lifestyle");
+							}
+						} else if (zone instanceof Commercial) {
+							zone.setPopulation(popShare);
+							zone.setGoods(goodsShare);
+							if (popShare > 0) {
+								System.out.println(type + " at (" + zone.getY() + "," + zone.getX() + ") received " + popShare + " population");
+							}
+							if (goodsShare > 0) {
+								System.out.println(type + " at (" + zone.getY() + "," + zone.getX() + ") received " + goodsShare + " goods");
+							}
+						} else if (zone instanceof Industrial) {
+							zone.setPopulation(popShare);
+							if (popShare > 0) {
+								System.out.println(type + " at (" + zone.getY() + "," + zone.getX() + ") received " + popShare + " population");
+							}
+						}
+					}
+				}
+			}
 
-			// Step 4: Tick Updates
+			// run each cell’s tick logic now that resources are assigned
 			for (int a = 0; a < map.length; a++) {
 				for (int b = 0; b < map[a].length; b++) {
 					if (map[a][b] != null) {
@@ -193,7 +191,7 @@ public class Main {
 											System.out.println(type + " at (" + zone.getY() + "," + zone.getX() + ") received health service");
 										}
 									} else if (service instanceof School) {
-										// Education ONLY goes to Houses
+										// school service only applies to houses
 										if (zone instanceof House) {
 											zone.setHasEducation(true);
 											System.out.println(type + " at (" + zone.getY() + "," + zone.getX() + ") received education service");
@@ -213,7 +211,7 @@ public class Main {
 		int x = cell.getX();
 		int y = cell.getY();
 
-		// Strict 4-Directional Orthogonal BFS (Left, Right, Up, Down)
+		// only walk the immediate left/right/up/down neighbors
 		int[][] directions = {{0, -1}, {0, 1}, {-1, 0}, {1, 0}};
 
 		for (int[] dir : directions) {
@@ -231,7 +229,7 @@ public class Main {
 	}
 
 	public static void distributeUtilities() {
-		// Enforce chronological processing grouped by utility type
+		// process utility types in order so distribution is stable
 		distributeSpecificUtility(InternetHub.class);
 		distributeSpecificUtility(WaterPumpingStation.class);
 		distributeSpecificUtility(PowerPlant.class);
