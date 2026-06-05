@@ -3,31 +3,31 @@ package com.project.buildings.zones;
 import com.project.buildings.mainclasses.Zone;
 
 public class Commercial extends Zone {
-    public Commercial(int x, int y, char mapInput) {
+    public Commercial(int x, int y, char mapInput){
         super(x, y, mapInput);
     }
 
     @Override
-    public void doTick() {
+    public void doTick(){
         int currentLevel = getLevel();
-        int targetLevel = 0;
 
-        //basic needs
+        // if there are population,goods,elec.,water and internet it can level up to level 1
         if (getElectricity() > 0 && getWater() > 0 && getInternet() > 0) {
-
-            //calcualte the m value ( minimum amount of utility)
+            //calculate the value of m
             int m = getElectricity();
             if (getWater() < m) m = getWater();
             if (getInternet() < m) m = getInternet();
 
-            //population and goods are aldo basic needs for level 1
-            if (getPopulation() > 0 && getGoods() > 0) targetLevel = 1; //if it has population and good it can level up to level 1
+            int targetLevel = 1;
 
-            if (getPopulation() > 0 && getGoods() > 0 && getHasSecurity()) targetLevel = 2;//if it is on level 1 and it has security it can level up to level 2
-
-            if (getPopulation() > 0 && getGoods() > 0 && getHasSecurity()) targetLevel = 3;
-
-
+            //if it is on level 1 and has security it can level up to level 2
+            if (getHasSecurity()) {
+                targetLevel = 2;
+                // if it is on level 2 and has population and goods it can level up to level 3
+                if (getPopulation() > 0 && getGoods() > 0) {
+                    targetLevel = 3;
+                }
+            }
 
             if (currentLevel < targetLevel) {
                 setLevel(currentLevel + 1);
@@ -35,24 +35,20 @@ public class Commercial extends Zone {
                 setLevel(currentLevel - 1);
             }
 
-
-
-
-            //output logic
+            //Output logic
             if (getLevel() == 1) {
                 setOutput(m);
             } else if (getLevel() == 2) {
                 setOutput(m * 2);
             } else if (getLevel() == 3) {
                 int minPopulationGoods = getPopulation();
-                if (getGoods() < minPopulationGoods) {
+                if(getGoods() < minPopulationGoods){
                     minPopulationGoods = getGoods();
                 }
                 setOutput((m * 2) + minPopulationGoods);
             } else {
                 setOutput(0);
             }
-
         } else {
             setOutput(0);
             setLevel(0);
